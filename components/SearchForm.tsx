@@ -44,7 +44,7 @@ export default function SearchForm({ onSearch, loading }: SearchFormProps) {
   };
 
   return (
-    <View style={styles.container}>
+    <View  style={styles.container}>
       <Text style={styles.title}>Search Flights</Text>
       
       <View style={styles.inputContainer}>
@@ -61,7 +61,7 @@ export default function SearchForm({ onSearch, loading }: SearchFormProps) {
         />
       </View>
 
-      <View style={styles.inputContainer}>
+      <View  className='items-center justify-center bg-white-200 '>
         <Text style={styles.label}>To</Text>
         <TextInput
           style={styles.input}

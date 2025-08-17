@@ -12,7 +12,7 @@ import SearchForm from '@/components/SearchForm';
 import FilterBar from '@/components/FilterBar';
 import FlightCard from '@/components/FlightCard';
 import { FlightOffer, SearchParams, FilterOptions } from '@/types/flight';
-import { searchFlights } from '@/services/flightApi';
+import { searchFlight } from '@/services/flightApi';
 
 export default function SearchScreen() {
   const router = useRouter();
@@ -33,7 +33,7 @@ export default function SearchScreen() {
     setHasSearched(true);
 
     try {
-      const response = await searchFlights(params);
+      const response = await searchFlight(params);
       setFlights(response.data);
     } catch (err) {
       setError('Failed to search flights. Please try again.');
@@ -112,7 +112,7 @@ export default function SearchScreen() {
     if (error) {
       return (
         <View style={styles.emptyContainer}>
-          <Text style={styles.errorTitle}>Something went wrong</Text>
+          <Text className='text-sm font-semibold' style={styles.errorTitle}>Something went wrong</Text>
           <Text style={styles.errorText}>{error}</Text>
         </View>
       );
