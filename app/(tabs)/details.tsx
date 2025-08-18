@@ -11,7 +11,7 @@ import { useLocalSearchParams, useRouter } from 'expo-router';
 import { ArrowLeft, Plane, Clock, MapPin, CreditCard, Users } from 'lucide-react-native';
 import { FlightOffer } from '@/types/flight';
 import { formatDateTime, formatDate, formatDuration, getStopText } from '@/utils/dateFormatter';
-import { getAirlineNames } from '@/services/flightApi';
+//import { getAirlineNames } from '@/services/flightApi';
 
 export default function FlightDetailsScreen() {
   const params = useLocalSearchParams();
@@ -110,7 +110,7 @@ export default function FlightDetailsScreen() {
                 <View key={segmentIndex} style={styles.segmentCard}>
                   <View style={styles.segmentHeader}>
                     <Text style={styles.airlineName}>
-                      {getAirlineNames(segment.carrierCode)} {segment.number}
+                      {/* {getAirlineNames(segment.carrierCode)} {segment.number} */}
                     </Text>
                     <Text style={styles.segmentDuration}>
                       {formatDuration(segment.duration)}
@@ -224,7 +224,7 @@ export default function FlightDetailsScreen() {
             <View style={styles.bookingRow}>
               <Text style={styles.bookingLabel}>Validating Airline</Text>
               <Text style={styles.bookingValue}>
-                {getAirlineNames(flight.validatingAirlineCodes[0])}
+                {/* {getAirlineNames(flight.validatingAirlineCodes[0])} */}
               </Text>
             </View>
           </View>

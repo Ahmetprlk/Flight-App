@@ -1,28 +1,33 @@
 import axios from 'axios';
 import { SearchParams, FlightSearchResponse, FlightOffer } from '@/types/flight';
 
-// Amadeus API credentials (güvenli şekilde .env dosyasından alınmalı)
-const AMADEUS_CLIENT_ID = process.env.AMADEUS_CLIENT_ID;
-const AMADEUS_CLIENT_SECRET = process.env.AMADEUS_CLIENT_SECRET;
+const AMADEUS_CLIENT_ID = "EQOy7PGw8chufkAQAswukbhB7NHUh34V";
+const AMADEUS_CLIENT_SECRET = "Fk97YXO2IkVY0AvB";
 const AMADEUS_API_URL = 'https://test.api.amadeus.com';
 
 // Token alma fonksiyonu
 async function getAccessToken() {
-  const response = await axios.post(`${AMADEUS_API_URL}/v1/security/oauth2/token`, null, {
-    params: {
+  const response = await axios.post(
+    `${AMADEUS_API_URL}/v1/security/oauth2/token`,
+    new URLSearchParams({
       grant_type: 'client_credentials',
-      client_id: AMADEUS_CLIENT_ID,
-      client_secret: AMADEUS_CLIENT_SECRET,
-    },
-    headers: {
-      'Content-Type': 'application/x-www-form-urlencoded',
-    },
-  });
+      client_id: AMADEUS_CLIENT_ID || '',
+      client_secret: AMADEUS_CLIENT_SECRET || '',
+    }),
+    {
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+    }
+  );
   return response.data.access_token;
 }
 
+
 // Uçuş arama fonksiyonu
 export async function searchFlight(params: SearchParams): Promise<FlightSearchResponse> {
+  console.log("SEARCH PARAMS:", params);
+
   const accessToken = await getAccessToken();
   const response = await axios.get(`${AMADEUS_API_URL}/v2/shopping/flight-offers`, {
     headers: {
@@ -39,6 +44,7 @@ export async function searchFlight(params: SearchParams): Promise<FlightSearchRe
   });
   return response.data;
 }
+
 
 
 // const MOCK_FLIGHT_DATA: FlightOffer[] = [
@@ -641,15 +647,15 @@ export async function searchFlight(params: SearchParams): Promise<FlightSearchRe
 //   };
 // };
 
-// export const getAirlineNames = (code: string): string => {
-//   const airlines: { [key: string]: string } = {
-//     'TK': 'Turkish Airlines',
-//     'AF': 'Air France',
-//     'DL': 'Delta Air Lines',
-//     'LH': 'Lufthansa',
-//     'BA': 'British Airways',
-//     'EK': 'Emirates',
-//     'QR': 'Qatar Airways'
-//   };
-//   return airlines[code] || code;
-// };
+export const getAirlineNames = (code: string): string => {
+  const airlines: { [key: string]: string } = {
+    'TK': 'Turkish Airlines',
+    'AF': 'Air France',
+    'DL': 'Delta Air Lines',
+    'LH': 'Lufthansa',
+    'BA': 'British Airways',
+    'EK': 'Emirates',
+    'QR': 'Qatar Airways'
+  };
+  return airlines[code] || code;
+};

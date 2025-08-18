@@ -5,8 +5,10 @@ import {
   TextInput,
   TouchableOpacity,
   StyleSheet,
-  Alert
+  Alert,
+  Platform
 } from 'react-native';
+import DateTimePicker from '@react-native-community/datetimepicker';
 import { Search } from 'lucide-react-native';
 import { SearchParams } from '@/types/flight';
 
@@ -18,6 +20,8 @@ interface SearchFormProps {
 export default function SearchForm({ onSearch, loading }: SearchFormProps) {
   const [origin, setOrigin] = useState('IST');
   const [destination, setDestination] = useState('JFK');
+  const [date, setDate] = useState(new Date());
+  const [showDatePicker, setShowDatePicker] = useState(false);
 
   const handleSearch = () => {
     if (!origin.trim() || !destination.trim()) {
@@ -38,15 +42,16 @@ export default function SearchForm({ onSearch, loading }: SearchFormProps) {
     onSearch({
       originLocationCode: origin.trim().toUpperCase(),
       destinationLocationCode: destination.trim().toUpperCase(),
+      departureDate: date.toISOString().split('T')[0],
       adults: 1,
       max: 10
     });
   };
 
   return (
-    <View  style={styles.container}>
+    <View style={styles.container}>
       <Text style={styles.title}>Search Flights</Text>
-      
+
       <View style={styles.inputContainer}>
         <Text style={styles.label}>From</Text>
         <TextInput
@@ -61,7 +66,7 @@ export default function SearchForm({ onSearch, loading }: SearchFormProps) {
         />
       </View>
 
-      <View  className='items-center justify-center bg-white-200 '>
+      <View style={styles.inputContainer}>
         <Text style={styles.label}>To</Text>
         <TextInput
           style={styles.input}
@@ -73,6 +78,30 @@ export default function SearchForm({ onSearch, loading }: SearchFormProps) {
           autoCapitalize="characters"
           autoCorrect={false}
         />
+      </View>
+
+      <View style={styles.inputContainer}>
+        <Text style={styles.label}>Departure Date</Text>
+        <TouchableOpacity
+          style={styles.input}
+          onPress={() => setShowDatePicker(true)}
+        >
+          <Text style={{ color: '#1F2937', fontSize: 16 }}>
+            {date.toISOString().split('T')[0]}
+          </Text>
+        </TouchableOpacity>
+        {showDatePicker && (
+          <DateTimePicker
+            value={date}
+            mode="date"
+            display={Platform.OS === 'ios' ? 'spinner' : 'default'}
+            onChange={(event, selectedDate) => {
+              setShowDatePicker(Platform.OS === 'ios');
+              if (selectedDate) setDate(selectedDate);
+            }}
+            minimumDate={new Date()}
+          />
+        )}
       </View>
 
       <TouchableOpacity
